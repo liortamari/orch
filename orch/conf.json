@@ -1,0 +1,8 @@
+{
+  "Debug": true,
+  "ListenAddress": ":3000",
+  "BackendDB": "sqlite",
+  "SQLite3DataFile": "/usr/local/orchestrator/orchestrator.sqlite3",
+  "MySQLTopologyUser": "orchestrator",
+  "MySQLTopologyPassword": "orc_topology_password"
+}
