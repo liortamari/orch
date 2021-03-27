@@ -3,4 +3,6 @@
 server-id = 1
 relay-log = /var/log/mysql/mysql-relay-bin.log
 log_bin = /var/log/mysql/mysql-bin.log
+log-slave-updates = ON
 binlog_format = ROW
+master_info_repository = TABLE
