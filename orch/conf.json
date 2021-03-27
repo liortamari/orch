@@ -4,5 +4,6 @@
   "BackendDB": "sqlite",
   "SQLite3DataFile": "/usr/local/orchestrator/orchestrator.sqlite3",
   "MySQLTopologyUser": "orchestrator",
-  "MySQLTopologyPassword": "orc_topology_password"
+  "MySQLTopologyPassword": "orc_topology_password",
+  "DetectClusterAliasQuery": "SELECT SUBSTRING_INDEX(@@hostname, \"-\", 1)"
 }
