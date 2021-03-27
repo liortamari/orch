@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   mysql-main-1:
     image: "${MYSQL_IMAGE}"
     env_file:
@@ -33,6 +34,28 @@ services:
       - ./main-3/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
       - ./repl_main.sql:/repl.sql
+
+  mysql-misc-a:
+    image: "${MYSQL_IMAGE}"
+    env_file:
+      - ./mysql.env
+    hostname: "mysql-misc-a"
+    container_name: "mysql-misc-a"
+    volumes:
+      - ./misc-a/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./orch.sql:/orch.sql
+      - ./repl_misc.sql:/repl.sql
+
+  mysql-misc-b:
+    image: "${MYSQL_IMAGE}"
+    env_file:
+      - ./mysql.env
+    hostname: "mysql-misc-b"
+    container_name: "mysql-misc-b"
+    volumes:
+      - ./misc-b/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./orch.sql:/orch.sql
+      - ./repl_misc.sql:/repl.sql
 
   orch:
     build:
