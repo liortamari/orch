@@ -1,6 +1,6 @@
 [mysqld]
 
-server-id = 1
+server-id = SERVER_ID
 relay-log = /var/log/mysql/mysql-relay-bin.log
 log_bin = /var/log/mysql/mysql-bin.log
 log-slave-updates = ON

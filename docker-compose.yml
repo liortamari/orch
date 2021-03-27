@@ -1,34 +1,27 @@
 version: '3'
+
 services:
-  mysql-master:
-    image: mysql:5.7
+  mysql-main-1:
+    image: "${MYSQL_IMAGE}"
     env_file:
       - ./mysql.env
-    hostname: "mysql-master"
-    container_name: "mysql-master"
-    restart: "no"
-    ports:
-      - 4406:3306
+    hostname: "mysql-main-1"
+    container_name: "mysql-main-1"
     volumes:
-      - ./master/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./main-1/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
       - ./repl_user.sql:/repl_user.sql
     networks:
       - overlay
 
-  mysql-slave:
-    image: mysql:5.7
+  mysql-main-2:
+    image: "${MYSQL_IMAGE}"
     env_file:
       - ./mysql.env
-    hostname: "mysql-slave"
-    container_name: "mysql-slave"
-    restart: "no"
-    ports:
-      - 5506:3306
-    depends_on:
-      - mysql-master
+    hostname: "mysql-main-2"
+    container_name: "mysql-main-2"
     volumes:
-      - ./slave/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./main-2/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
       - ./repl_user.sql:/repl_user.sql
     networks:
@@ -39,7 +32,6 @@ services:
       context: ./orch
       dockerfile: Dockerfile
     hostname: "orch"
-    container_name: "orch"
     ports:
       - 3003:3000
     volumes:
