@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function run_sql_stmt () {
-  local cmd="export MYSQL_PWD=111; mysql -u root -e \"${2}\""
+  local cmd="export MYSQL_PWD=111; mysql -u root ${3} -e \"${2}\""
   docker-compose exec "${1}" sh -c "${cmd}"
 }
 
@@ -54,6 +54,13 @@ MAIN_CURRENT_POS=`echo $MAIN_STATUS | awk '{print $7}'`
 MISC_STATUS=`docker exec mysql-misc-a sh -c 'export MYSQL_PWD=111; mysql -u root -e "SHOW MASTER STATUS"'`
 MISC_CURRENT_LOG=`echo $MISC_STATUS | awk '{print $6}'`
 MISC_CURRENT_POS=`echo $MISC_STATUS | awk '{print $7}'`
+
+# insert data
+echo "===INSERT DATA==="
+main_insert_stmt='create table code(code int); insert into code values (100), (200), (300)'
+run_sql_stmt mysql-main-1 "${main_insert_stmt}" mydb
+misc_insert_stmt='create table code(code int); insert into code values (5555), (6666)'
+run_sql_stmt mysql-misc-a "${misc_insert_stmt}" mydb
 
 # add replication user
 echo "===ADDING REPLICATION USER==="
