@@ -46,7 +46,7 @@ CURRENT_POS=`echo $MS_STATUS | awk '{print $7}'`
 
 # add replication user
 echo "===ADDING REPLICATION USER==="
-run_sql_file mysql-main-1 "/repl_user.sql"
+run_sql_file mysql-main-1 "/repl.sql"
 
 # add orch user
 echo "===ADDING ORCH USER==="
@@ -54,7 +54,7 @@ run_sql_file mysql-main-1 "/orch.sql"
 
 # configure replication
 echo "===CONFIG REPLICATION==="
-start_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-main-1',MASTER_USER='mydb_repl_user',MASTER_PASSWORD='mydb_repl_pwd',MASTER_LOG_FILE='$CURRENT_LOG',MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
+start_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-main-1',MASTER_USER='mydb_repl_main',MASTER_PASSWORD='mydb_repl_pwd',MASTER_LOG_FILE='$CURRENT_LOG',MASTER_LOG_POS=$CURRENT_POS; START SLAVE;"
 run_sql_stmt mysql-main-2 "$start_slave_stmt"
 run_sql_stmt mysql-main-3 "$start_slave_stmt"
 
@@ -62,10 +62,3 @@ run_sql_stmt mysql-main-3 "$start_slave_stmt"
 echo "===TEST REPLICATION==="
 run_sql_stmt mysql-main-2 "SHOW SLAVE STATUS\G"
 run_sql_stmt mysql-main-3 "SHOW SLAVE STATUS\G"
-
-# test orch user
-echo "===TEST ORCHESTRATOR==="
-sleep 5
-docker-compose exec mysql-main-1 sh -c "export MYSQL_PWD=orc_topology_password; mysql -u orchestrator -e 'SHOW MASTER STATUS\G'"
-docker-compose exec mysql-main-2 sh -c "export MYSQL_PWD=orc_topology_password; mysql -u orchestrator -e 'SHOW SLAVE STATUS\G'"
-docker-compose exec mysql-main-3 sh -c "export MYSQL_PWD=orc_topology_password; mysql -u orchestrator -e 'SHOW SLAVE STATUS\G'"

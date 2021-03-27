@@ -10,7 +10,7 @@ services:
     volumes:
       - ./main-1/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
-      - ./repl_user.sql:/repl_user.sql
+      - ./repl_main.sql:/repl.sql
 
   mysql-main-2:
     image: "${MYSQL_IMAGE}"
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./main-2/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
-      - ./repl_user.sql:/repl_user.sql
+      - ./repl_main.sql:/repl.sql
 
   mysql-main-3:
     image: "${MYSQL_IMAGE}"
@@ -32,9 +32,7 @@ services:
     volumes:
       - ./main-3/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
       - ./orch.sql:/orch.sql
-      - ./repl_user.sql:/repl_user.sql
-
-
+      - ./repl_main.sql:/repl.sql
 
   orch:
     build:
@@ -45,6 +43,3 @@ services:
       - 3003:3000
     volumes:
       - ./orch/conf.json:/usr/local/orchestrator/orchestrator.conf.json
-
-
-
