@@ -23,7 +23,8 @@ wait_for () {
   run_sql_stmt "${1}" "SHOW MASTER STATUS\G"
 }
 
-# prep server_id
+# prep
+sed 's/REPL_USER/mydb_repl_main/g' repl.sql  > repl_main.sql
 sed 's/SERVER_ID/1/g' mysql.conf.cnf  > main-1/mysql.conf.cnf
 sed 's/SERVER_ID/2/g' mysql.conf.cnf  > main-2/mysql.conf.cnf
 sed 's/SERVER_ID/3/g' mysql.conf.cnf  > main-3/mysql.conf.cnf
