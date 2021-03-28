@@ -1,9 +1,10 @@
 Docker MySQL orchestrator
 ========================
 
-#### Build
 
 ```
 ./build.sh
 ```
 
+
+http://localhost:3003
