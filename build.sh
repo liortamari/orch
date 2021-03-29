@@ -15,12 +15,22 @@ function run_sql_file () {
   docker-compose exec "${1}" sh -c "${cmd}"
 }
 
+function check_exit() {
+  err=$(docker-compose ps | grep Exit)
+  if [ -n "$err" ]
+  then
+    echo "ERRORS"
+    exit 1
+  fi
+}
+
 function wait_for () {
   echo "===WAIT FOR SERVER ${1}==="
   until run_sql_stmt_quiet "${1}" \;
   do
-     sleep 1
-     echo -n "."
+    sleep 1
+    echo -n "."
+    check_exit
   done
   run_sql_stmt "${1}" "SHOW MASTER STATUS\G"
 }
