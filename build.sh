@@ -66,6 +66,15 @@ wait_for mysql-main-3
 wait_for mysql-misc-a
 wait_for mysql-misc-b
 
+# get position from master
+echo "===GET POSITION==="
+MAIN_STATUS=`docker exec mysql-main-1 sh -c 'export MYSQL_PWD=111; mysql -u root -e "SHOW MASTER STATUS"'`
+MAIN_CURRENT_LOG=`echo $MAIN_STATUS | awk '{print $6}'`
+MAIN_CURRENT_POS=`echo $MAIN_STATUS | awk '{print $7}'`
+MISC_STATUS=`docker exec mysql-misc-a sh -c 'export MYSQL_PWD=111; mysql -u root -e "SHOW MASTER STATUS"'`
+MISC_CURRENT_LOG=`echo $MISC_STATUS | awk '{print $6}'`
+MISC_CURRENT_POS=`echo $MISC_STATUS | awk '{print $7}'`
+
 # dump master
 echo "===EXPORT DUMP MASTER==="
 export_dump mysql-main-1
@@ -96,10 +105,10 @@ import_dump mysql-misc-b mysql-misc-a
 
 # configure replication
 echo "===CONFIG REPLICATION==="
-main_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-main-1',MASTER_USER='mydb_repl_main',MASTER_PASSWORD='mydb_repl_pwd',MASTER_AUTO_POSITION=1; START SLAVE;"
+main_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-main-1',MASTER_USER='mydb_repl_main',MASTER_PASSWORD='mydb_repl_pwd',MASTER_LOG_FILE='${MAIN_CURRENT_LOG}',MASTER_LOG_POS=${MAIN_CURRENT_POS}; START SLAVE;"
 run_sql_stmt mysql-main-2 "${main_slave_stmt}"
 run_sql_stmt mysql-main-3 "${main_slave_stmt}"
-misc_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-misc-a',MASTER_USER='mydb_repl_misc',MASTER_PASSWORD='mydb_repl_pwd',MASTER_AUTO_POSITION=1; START SLAVE;"
+misc_slave_stmt="CHANGE MASTER TO MASTER_HOST='mysql-misc-a',MASTER_USER='mydb_repl_misc',MASTER_PASSWORD='mydb_repl_pwd',MASTER_LOG_FILE='${MISC_CURRENT_LOG}',MASTER_LOG_POS=${MISC_CURRENT_POS}; START SLAVE;"
 run_sql_stmt mysql-misc-b "${misc_slave_stmt}"
 
 # test replication
