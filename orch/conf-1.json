@@ -7,7 +7,7 @@
   "MySQLTopologyPassword": "orc_topology_password",
   "DetectClusterAliasQuery": "SELECT SUBSTRING_INDEX(@@hostname, \"-\", 2)",
   "RaftEnabled": true,
-  "RaftBind": "ORCH_ID",
+  "RaftBind": "orch-1",
   "RaftDataDir": "/var/lib/orchestrator",
   "RaftNodes": [
     "orch-1",

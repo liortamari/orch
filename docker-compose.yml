@@ -5,72 +5,88 @@ services:
   mysql-main-1:
     image: "${MYSQL_IMAGE}"
     env_file:
-      - ./mysql.env
+      - ./mysql/mysql.env
     hostname: "mysql-main-1"
     container_name: "mysql-main-1"
     volumes:
-      - ./main-1/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-      - ./orch.sql:/orch.sql
-      - ./repl_main.sql:/repl.sql
+      - ./mysql/conf/mysql_main_1.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./mysql/sql:/sql
       - dump-volume:/dump-vol
 
   mysql-main-2:
     image: "${MYSQL_IMAGE}"
     env_file:
-      - ./mysql.env
+      - ./mysql/mysql.env
     hostname: "mysql-main-2"
     container_name: "mysql-main-2"
     volumes:
-      - ./main-2/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-      - ./orch.sql:/orch.sql
-      - ./repl_main.sql:/repl.sql
+      - ./mysql/conf/mysql_main_2.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./mysql/sql:/sql
       - dump-volume:/dump-vol
 
   mysql-main-3:
     image: "${MYSQL_IMAGE}"
     env_file:
-      - ./mysql.env
+      - ./mysql/mysql.env
     hostname: "mysql-main-3"
     container_name: "mysql-main-3"
     volumes:
-      - ./main-3/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-      - ./orch.sql:/orch.sql
-      - ./repl_main.sql:/repl.sql
+      - ./mysql/conf/mysql_main_3.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./mysql/sql:/sql
       - dump-volume:/dump-vol
 
   mysql-misc-a:
     image: "${MYSQL_IMAGE}"
     env_file:
-      - ./mysql.env
+      - ./mysql/mysql.env
     hostname: "mysql-misc-a"
     container_name: "mysql-misc-a"
     volumes:
-      - ./misc-a/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-      - ./orch.sql:/orch.sql
-      - ./repl_misc.sql:/repl.sql
+      - ./mysql/conf/mysql_misc_a.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./mysql/sql:/sql
       - dump-volume:/dump-vol
 
   mysql-misc-b:
     image: "${MYSQL_IMAGE}"
     env_file:
-      - ./mysql.env
+      - ./mysql/mysql.env
     hostname: "mysql-misc-b"
     container_name: "mysql-misc-b"
     volumes:
-      - ./misc-b/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
-      - ./orch.sql:/orch.sql
-      - ./repl_misc.sql:/repl.sql
+      - ./mysql/conf/mysql_misc_b.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./mysql/sql:/sql
       - dump-volume:/dump-vol
 
-  orch:
+  orch-1:
     build:
       context: ./orch
       dockerfile: Dockerfile
-    hostname: "orch"
+    hostname: "orch-1"
     ports:
-      - 3003:3000
+      - 3111:3000
     volumes:
-      - ./orch/conf.json:/usr/local/orchestrator/orchestrator.conf.json
+      - ./orch/conf-1.json:/usr/local/orchestrator/orchestrator.conf.json
+
+  orch-2:
+    build:
+      context: ./orch
+      dockerfile: Dockerfile
+    hostname: "orch-2"
+    ports:
+      - 3112:3000
+    volumes:
+      - ./orch/conf-2.json:/usr/local/orchestrator/orchestrator.conf.json
+
+  orch-3:
+    build:
+      context: ./orch
+      dockerfile: Dockerfile
+    hostname: "orch-3"
+    ports:
+      - 3113:3000
+    volumes:
+      - ./orch/conf-3.json:/usr/local/orchestrator/orchestrator.conf.json
+
 
 volumes:
      dump-volume:

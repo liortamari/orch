@@ -65,16 +65,19 @@ function wait_for() {
 }
 
 # prep
-sed 's/REPL_USER/mydb_repl_main/g' repl.sql >repl_main.sql
-sed 's/REPL_USER/mydb_repl_misc/g' repl.sql >repl_misc.sql
-sed 's/SERVER_ID/100/g' mysql.conf.cnf >main-1/mysql.conf.cnf
-sed 's/SERVER_ID/200/g' mysql.conf.cnf >main-2/mysql.conf.cnf
-sed 's/SERVER_ID/300/g' mysql.conf.cnf >main-3/mysql.conf.cnf
-sed 's/SERVER_ID/10/g' mysql.conf.cnf >misc-a/mysql.conf.cnf
-sed 's/SERVER_ID/20/g' mysql.conf.cnf >misc-b/mysql.conf.cnf
+sed 's/REPL_USER/mydb_repl_main/g' ./mysql/sql/repl.sql > ./mysql/sql/repl_main.sql
+sed 's/REPL_USER/mydb_repl_misc/g' ./mysql/sql/repl.sql > ./mysql/sql/repl_misc.sql
+sed 's/SERVER_ID/100/g' ./mysql/conf/mysql.conf.cnf > ./mysql/conf/mysql_main_1.conf.cnf
+sed 's/SERVER_ID/200/g' ./mysql/conf/mysql.conf.cnf > ./mysql/conf/mysql_main_2.conf.cnf
+sed 's/SERVER_ID/300/g' ./mysql/conf/mysql.conf.cnf > ./mysql/conf/mysql_main_3.conf.cnf
+sed 's/SERVER_ID/10/g' ./mysql/conf/mysql.conf.cnf > ./mysql/conf/mysql_misc_a.conf.cnf
+sed 's/SERVER_ID/20/g' ./mysql/conf/mysql.conf.cnf > ./mysql/conf/mysql_misc_b.conf.cnf
+sed 's/ORCH_ID/orch-1/g' ./orch/conf.json > ./orch/conf-1.json
+sed 's/ORCH_ID/orch-2/g' ./orch/conf.json > ./orch/conf-2.json
+sed 's/ORCH_ID/orch-3/g' ./orch/conf.json > ./orch/conf-3.json
 
 # init containers
-docker-compose down -v
+docker-compose down -v --remove-orphans
 docker-compose build
 docker-compose up -d
 
@@ -97,13 +100,13 @@ insert_data mysql-misc-a "(5555), (6666)"
 
 # add replication user
 echo "===ADDING REPLICATION USER==="
-run_sql_file mysql-main-1 "/repl.sql"
-run_sql_file mysql-misc-a "/repl.sql"
+run_sql_file mysql-main-1 "/sql/repl_main.sql"
+run_sql_file mysql-misc-a "/sql/repl_misc.sql"
 
 # add orch user
 echo "===ADDING ORCH USER==="
-run_sql_file mysql-main-1 "/orch.sql"
-run_sql_file mysql-misc-a "/orch.sql"
+run_sql_file mysql-main-1 "/sql/orch.sql"
+run_sql_file mysql-misc-a "/sql/orch.sql"
 
 # restore slave
 echo "===IMPORT DUMP SLAVE==="
