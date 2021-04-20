@@ -6,6 +6,14 @@
   "MySQLTopologyUser": "orchestrator",
   "MySQLTopologyPassword": "orc_topology_password",
   "DetectClusterAliasQuery": "SELECT SUBSTRING_INDEX(@@hostname, \"-\", 2)",
+  "RecoveryPeriodBlockSeconds": 60,
+  "RecoverMasterClusterFilters": [
+    "*"
+  ],
+  "RecoverIntermediateMasterClusterFilters": [
+    "*"
+  ],
+  "RecoverNonWriteableMaster": true,
   "RaftEnabled": true,
   "RaftBind": "orch-2",
   "RaftDataDir": "/var/lib/orchestrator",
