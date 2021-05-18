@@ -30,6 +30,12 @@ function change_master() {
   run_sql_stmt "${1}" "${slave_stmt}"
 }
 
+function discover() {
+  local srv="ORCHESTRATOR_API=\"http://orch-1:3000/api http://orch-2:3000/api http://orch-3:3000/api\""
+  local cmd="${srv} /sql/orchestrator-client.sh -c discover -i ${1}"
+  docker-compose exec "${1}" sh -c "${cmd}"
+}
+
 function insert_data() {
   local insert_stmt="create table code(code int); insert into code values ${2}"
   run_sql_stmt "${1}" "${insert_stmt}" mydb
@@ -129,9 +135,18 @@ run_sql_stmt mysql-main-2 "SHOW SLAVE STATUS\G"
 run_sql_stmt mysql-main-3 "SHOW SLAVE STATUS\G"
 run_sql_stmt mysql-misc-b "SHOW SLAVE STATUS\G"
 
+# discover
+echo "===DISCOVER==="
+discover mysql-main-1
+discover mysql-main-2
+discover mysql-main-3
+discover mysql-misc-a
+discover mysql-misc-b
+
 # test replication
 echo "===TEST REPLICATION==="
 compare_repl mysql-main-1 mysql-main-2
 compare_repl mysql-main-1 mysql-main-3
 compare_repl mysql-misc-a mysql-misc-b
+
 echo "===BUILD SUCCESS==="

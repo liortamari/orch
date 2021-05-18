@@ -3,7 +3,9 @@ version: '3'
 services:
 
   mysql-main-1:
-    image: "${MYSQL_IMAGE}"
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     env_file:
       - ./mysql/mysql.env
     hostname: "mysql-main-1"
@@ -14,7 +16,9 @@ services:
       - dump-volume:/dump-vol
 
   mysql-main-2:
-    image: "${MYSQL_IMAGE}"
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     env_file:
       - ./mysql/mysql.env
     hostname: "mysql-main-2"
@@ -25,7 +29,9 @@ services:
       - dump-volume:/dump-vol
 
   mysql-main-3:
-    image: "${MYSQL_IMAGE}"
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     env_file:
       - ./mysql/mysql.env
     hostname: "mysql-main-3"
@@ -36,7 +42,9 @@ services:
       - dump-volume:/dump-vol
 
   mysql-misc-a:
-    image: "${MYSQL_IMAGE}"
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     env_file:
       - ./mysql/mysql.env
     hostname: "mysql-misc-a"
@@ -47,7 +55,9 @@ services:
       - dump-volume:/dump-vol
 
   mysql-misc-b:
-    image: "${MYSQL_IMAGE}"
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     env_file:
       - ./mysql/mysql.env
     hostname: "mysql-misc-b"
