@@ -11,7 +11,7 @@ RUN cd orchestrator && ./script/build
 FROM ubuntu:20.04
 
 RUN apt-get update && \
-  apt-get install -y jq curl iputils-ping telnet && \
+  apt-get install -y jq curl iputils-ping telnet procps vim && \
   rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /usr/local/orchestrator
 COPY --from=0 /go/src/orchestrator/bin /usr/local/orchestrator/

@@ -88,6 +88,10 @@ wait_for mysql-main-3
 wait_for mysql-misc-a
 wait_for mysql-misc-b
 
+# enable masters
+run_sql_stmt mysql-main-1 "SET GLOBAL READ_ONLY=0;"
+run_sql_stmt mysql-misc-a "SET GLOBAL READ_ONLY=0;"
+
 # dump master
 echo "===EXPORT DUMP MASTER==="
 export_dump mysql-main-1

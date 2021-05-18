@@ -6,7 +6,7 @@
   "MySQLTopologyUser": "orchestrator",
   "MySQLTopologyPassword": "orc_topology_password",
   "DetectClusterAliasQuery": "SELECT SUBSTRING_INDEX(@@hostname, \"-\", 2)",
-  "RecoveryPeriodBlockSeconds": 60,
+  "RecoveryPeriodBlockSeconds": 1,
   "RecoverMasterClusterFilters": [
     "*"
   ],
