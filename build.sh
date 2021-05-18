@@ -32,8 +32,10 @@ function change_master() {
 
 function discover() {
   local srv="ORCHESTRATOR_API=\"http://orch-1:3000/api http://orch-2:3000/api http://orch-3:3000/api\""
-  local cmd="${srv} /sql/orchestrator-client.sh -c discover -i ${1}"
-  docker-compose exec "${1}" sh -c "${cmd}"
+  local discover_cmd="${srv} /sql/orchestrator-client.sh -c discover -i ${1}"
+  local register_cmd="${srv} /sql/orchestrator-client.sh -c register-candidate -i ${1} -R ${2}"
+  docker-compose exec "${1}" sh -c "${discover_cmd}"
+  docker-compose exec "${1}" sh -c "${register_cmd}"
 }
 
 function insert_data() {
@@ -137,11 +139,11 @@ run_sql_stmt mysql-misc-b "SHOW SLAVE STATUS\G"
 
 # discover
 echo "===DISCOVER==="
-discover mysql-main-1
-discover mysql-main-2
-discover mysql-main-3
-discover mysql-misc-a
-discover mysql-misc-b
+discover mysql-main-1 prefer
+discover mysql-main-2 prefer
+discover mysql-main-3 must_not
+discover mysql-misc-a prefer
+discover mysql-misc-b prefer
 
 # test replication
 echo "===TEST REPLICATION==="
