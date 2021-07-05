@@ -137,6 +137,10 @@ run_sql_stmt mysql-main-2 "SHOW SLAVE STATUS\G"
 run_sql_stmt mysql-main-3 "SHOW SLAVE STATUS\G"
 run_sql_stmt mysql-misc-b "SHOW SLAVE STATUS\G"
 
+# check which orch is leader
+echo "===FINDING ORCH LEADER==="
+docker-compose logs | grep "state: Leader" | head -n1
+
 # discover
 echo "===DISCOVER==="
 discover mysql-main-1 prefer
