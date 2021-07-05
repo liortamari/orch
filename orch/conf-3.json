@@ -13,11 +13,14 @@
   "RecoverIntermediateMasterClusterFilters": [
     "mysql-main"
   ],
-  "PreGracefulTakeoverProcesses": [
-    "echo 'Planned failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+  "PostGracefulTakeoverProcesses": [
+    "echo 'Graceful takeover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
   ],
-  "PreFailoverProcesses": [
-    "echo 'Auto failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+  "PostFailoverProcesses": [
+    "echo 'Failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+  ],
+  "PostUnsuccessfulFailoverProcesses": [
+    "echo 'Unsuccessful failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
   ],
   "RecoverNonWriteableMaster": true,
   "RaftEnabled": true,
