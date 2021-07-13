@@ -1,9 +1,0 @@
-STOP SLAVE;
-SET GTID_NEXT="71***4:2***8";
-BEGIN; COMMIT;
-SET GTID_NEXT=AUTOMATIC;
-START SLAVE;
-
-  "AuthenticationMethod": "multi",
-  "HTTPAuthUser":         "user",
-  "HTTPAuthPassword":     "pass",
