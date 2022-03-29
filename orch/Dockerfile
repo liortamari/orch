@@ -4,7 +4,7 @@ FROM golang:1.15
 RUN apt-get update && \
   apt-get install -y rsync
 WORKDIR /go/src/
-RUN git clone https://github.com/openark/orchestrator.git
+RUN git clone --branch v3.2.5 https://github.com/openark/orchestrator.git
 RUN cd orchestrator && ./script/build
 
 # run layer

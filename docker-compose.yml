@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  echo:
+    image: ealen/echo-server
+    hostname: "echo"
+    container_name: "echo"
+    ports:
+      - 1111:80
 
   mysql-main-1:
     build:

@@ -14,13 +14,13 @@
     "mysql-main"
   ],
   "PostGracefulTakeoverProcesses": [
-    "echo 'Graceful takeover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+    "curl -d '{\"payload\": {\"summary\":\"Graceful takeover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='\"${ORC_FAILURE_DESCRIPTION}\"'\", \"source\":\"mysql-orchestrator\", \"severity\":\"info\"}, \"event_action\":\"trigger\", \"routing_key\":\"'${ORC_PAGERDUTY_KEY}'\"}' -H 'Content-Type: application/json' -X POST http://echo:80/v2/enqueue"
   ],
   "PostFailoverProcesses": [
-    "echo 'Failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+    "curl -d '{\"payload\": {\"summary\":\"Failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='\"${ORC_FAILURE_DESCRIPTION}\"'\", \"source\":\"mysql-orchestrator\", \"severity\":\"info\"}, \"event_action\":\"trigger\", \"routing_key\":\"${ORC_PAGERDUTY_KEY}\"}' -H 'Content-Type: application/json' -X POST http://echo:80/v2/enqueue"
   ],
   "PostUnsuccessfulFailoverProcesses": [
-    "echo 'Unsuccessful failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='${ORC_FAILURE_DESCRIPTION}'' >> /tmp/recovery.log"
+    "curl -d '{\"payload\": {\"summary\":\"Unsuccessful failover on cluster='${ORC_FAILURE_CLUSTER_ALIAS}' failed_host='${ORC_FAILED_HOST}' type='${ORC_INSTANCE_TYPE}' orchestrator_host='${ORC_ORCHESTRATOR_HOST}' failure='\"${ORC_FAILURE_DESCRIPTION}\"'\", \"source\":\"mysql-orchestrator\", \"severity\":\"info\"}, \"event_action\":\"trigger\", \"routing_key\":\"${ORC_PAGERDUTY_KEY}\"}' -H 'Content-Type: application/json' -X POST http://echo:80/v2/enqueue"
   ],
   "RecoverNonWriteableMaster": true,
   "RaftEnabled": true,
